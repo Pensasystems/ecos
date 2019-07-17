@@ -27,7 +27,6 @@
  */
 
 #include "kkt.h"
-#include "ldl.h"
 #include "splamm.h"
 #include "ecos.h"
 #include "cone.h"

@@ -9,7 +9,7 @@
  */
 
 #include "../../include/glblopts.h"
-#include "../../include/ecos.h"
+// #include "../../include/ecos.h"
 
 #include "SuiteSparse_config.h"
 

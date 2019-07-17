@@ -30,6 +30,8 @@
 #ifndef __KKT_H__
 #define __KKT_H__
 
+
+#include "ldl.h"
 #include "glblopts.h"
 #include "spla.h"
 #include "cone.h"
