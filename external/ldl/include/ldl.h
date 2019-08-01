@@ -46,7 +46,7 @@ void ldl_symbolic2 (int n, int Ap [ ], int Ai [ ], int Lp [ ], int Parent [ ], i
 int ldl_numeric2 (int n, int Ap [ ], int Ai [ ], double Ax [ ],
     int Lp [ ], int Parent [ ], int Sign[], double eps, double delta, int Lnz [ ], int Li [ ], double Lx [ ],
     double D [ ], double Y [ ], int Pattern [ ], int Flag [ ]
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
      ,double *t1, double *t2
 #endif
                   ) ;
@@ -73,7 +73,7 @@ SuiteSparse_long ldl_l_numeric2 (SuiteSparse_long n, SuiteSparse_long Ap [ ],
     SuiteSparse_long Parent [ ], SuiteSparse_long Sign [ ], double eps, double delta, SuiteSparse_long Lnz [ ],
     SuiteSparse_long Li [ ], double Lx [ ], double D [ ], double Y [ ],
     SuiteSparse_long Pattern [ ], SuiteSparse_long Flag [ ]
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
                                  ,double *t1, double *t2
 #endif
                                  ) ;

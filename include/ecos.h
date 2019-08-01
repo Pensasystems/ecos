@@ -30,13 +30,13 @@ extern "C" {
 #include "cone.h"
 #include "kkt.h"
 
-#if PROFILING > 0
+#if PROFILE_ECOS > 0
 #include "timer.h"
 #endif
 
-#if CTRLC > 0
-#include "ctrlc.h"
-#endif
+// #if CTRLC > 0
+// #include "ctrlc.h"
+// #endif
 
 /* ECOS VERSION NUMBER - FORMAT: X.Y.Z --------------------------------- */
 #define ECOS_VERSION ("2.0.7")
@@ -52,7 +52,7 @@ extern "C" {
 #define GAMMA      (0.99)        /* scaling the final step length        */
 #define STATICREG  (1)           /* static regularization: 0:off, 1:on   */
 #define DELTASTAT  (7E-8)        /* regularization parameter             */
-#define DELTA      (2E-7)        /* dyn. regularization parameter        */
+#define DELTA_ECOS (2E-7)        /* dyn. regularization parameter        */
 #define EPS        (1E-13)  /* dyn. regularization threshold (do not 0!) */
 #define VERBOSE    (1)           /* bool for verbosity; PRINTLEVEL < 3   */
 #define NITREF     (9)       	 /* number of iterative refinement steps */
@@ -138,11 +138,11 @@ typedef struct stats{
     idxint nitref1;
     idxint nitref2;
     idxint nitref3;
-#if PROFILING > 0
+#if PROFILE_ECOS > 0
 	pfloat tsetup;
 	pfloat tsolve;
 #endif
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 	pfloat tfactor;
 	pfloat tkktsolve;
 	pfloat torder;

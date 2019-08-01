@@ -31,10 +31,10 @@ int main(void)
 	idxint exitflag = ECOS_FATAL;
 	pwork* mywork;
 
-#if PROFILING > 0
+#if PROFILE_ECOS > 0
 	double ttotal, tsolve, tsetup;
 #endif
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
     double torder, tkktcreate, ttranspose, tfactor, tkktsolve;
 #endif
     
@@ -70,12 +70,12 @@ int main(void)
 	exitflag = ECOS_solve(mywork);
 
 	/* some statistics in milliseconds */
-#if PROFILING > 0
+#if PROFILE_ECOS > 0
 	tsolve = mywork->info->tsolve         * 1000;
 	tsetup = mywork->info->tsetup         * 1000;
 	ttotal = tsetup + tsolve;
 #endif
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 	torder = mywork->info->torder         * 1000;
 	tkktcreate = mywork->info->tkktcreate * 1000;
 	ttranspose = mywork->info->ttranspose * 1000;
@@ -84,7 +84,7 @@ int main(void)
 #endif
 
 #if PRINTLEVEL > 2
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 	printf("ECOS timings (all times in milliseconds):\n\n");
 	printf("1. Setup: %7.3f (%4.1f%%)\n", tsetup,  tsetup / ttotal*100);
 	printf("2. Solve: %7.3f (%4.1f%%)\n", tsolve,  tsolve / ttotal*100);

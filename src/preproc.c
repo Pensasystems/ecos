@@ -563,17 +563,17 @@ pwork* ECOS_setup(idxint n, idxint m, idxint p, idxint l, idxint ncones, idxint*
 	spmat *At, *Gt, *KU;
 	idxint *AtoAt, *GtoGt, *AttoK, *GttoK;
 
-#if PROFILING > 0
+#if PROFILE_ECOS > 0
 	timer tsetup;
 #endif
 
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 	timer tcreatekkt;
 	timer tmattranspose;
 	timer tordering;
 #endif
 
-#if PROFILING > 0
+#if PROFILE_ECOS > 0
 	tic(&tsetup);
 #endif
 
@@ -736,7 +736,7 @@ pwork* ECOS_setup(idxint n, idxint m, idxint p, idxint l, idxint ncones, idxint*
 
 	/* info struct */
     mywork->info = (stats *)MALLOC(sizeof(stats));
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 	mywork->info->tfactor = 0;
 	mywork->info->tkktsolve = 0;
     mywork->info->tfactor_t1 = 0;
@@ -761,7 +761,7 @@ pwork* ECOS_setup(idxint n, idxint m, idxint p, idxint l, idxint ncones, idxint*
 	mywork->stgs = (settings *)MALLOC(sizeof(settings));
 	mywork->stgs->maxit = MAXIT;
 	mywork->stgs->gamma = GAMMA;
-	mywork->stgs->delta = DELTA;
+	mywork->stgs->delta = DELTA_ECOS;
     mywork->stgs->eps = EPS;
 	mywork->stgs->nitref = NITREF;
 	mywork->stgs->abstol = ABSTOL;
@@ -809,7 +809,7 @@ pwork* ECOS_setup(idxint n, idxint m, idxint p, idxint l, idxint ncones, idxint*
     #endif
 #endif
 
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 	mywork->info->ttranspose = 0;
 	tic(&tmattranspose);
 #endif
@@ -821,7 +821,7 @@ pwork* ECOS_setup(idxint n, idxint m, idxint p, idxint l, idxint ncones, idxint*
     At = NULL;
     AtoAt = NULL;
   }
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 	mywork->info->ttranspose += toc(&tmattranspose);
 #endif
 #if PRINTLEVEL > 2
@@ -829,12 +829,12 @@ pwork* ECOS_setup(idxint n, idxint m, idxint p, idxint l, idxint ncones, idxint*
 #endif
 
 
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 	tic(&tmattranspose);
 #endif
 	GtoGt = MALLOC(mywork->G->nnz*sizeof(idxint));
 	Gt = transposeSparseMatrix(mywork->G, GtoGt);
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 	mywork->info->ttranspose += toc(&tmattranspose);
 #endif
 #if PRINTLEVEL > 2
@@ -842,7 +842,7 @@ pwork* ECOS_setup(idxint n, idxint m, idxint p, idxint l, idxint ncones, idxint*
 #endif
 
     /* set up KKT system */
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 	tic(&tcreatekkt);
 #endif
 	if (mywork->A)
@@ -851,7 +851,7 @@ pwork* ECOS_setup(idxint n, idxint m, idxint p, idxint l, idxint ncones, idxint*
 		AttoK = NULL;
 	GttoK = MALLOC(mywork->G->nnz*sizeof(idxint));
 	createKKT_U(Gt, At, mywork->C, &Sign, &KU, AttoK, GttoK);
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 	mywork->info->tkktcreate = toc(&tcreatekkt);
 #endif
 #if PRINTLEVEL > 2
@@ -919,12 +919,12 @@ pwork* ECOS_setup(idxint n, idxint m, idxint p, idxint l, idxint ncones, idxint*
 
     /* calculate ordering of KKT matrix using AMD */
 	P = (idxint *)MALLOC(nK*sizeof(idxint));
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 	tic(&tordering);
 #endif
 	AMD_defaults(Control);
 	amd_result = AMD_order(nK, KU->jc, KU->ir, P, Control, Info);
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 	mywork->info->torder = toc(&tordering);
 #endif
 
@@ -1022,7 +1022,7 @@ pwork* ECOS_setup(idxint n, idxint m, idxint p, idxint l, idxint ncones, idxint*
     FREE(GtoGt);
     FREE(GttoK);
 
-#if PROFILING > 0
+#if PROFILE_ECOS > 0
 	mywork->info->tsetup = toc(&tsetup);
 #endif
 

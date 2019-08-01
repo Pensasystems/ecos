@@ -82,7 +82,7 @@ typedef struct kkt{
  * If detailed profiling is turned on, the function returns the accumulated times
  * for sparsity pattern computation in t1 and for numerical solve in t2.
  */
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 idxint kkt_factor(kkt* KKT, pfloat eps, pfloat delta, pfloat *t1, pfloat *t2);
 #else
 idxint kkt_factor(kkt* KKT, pfloat eps, pfloat delta);

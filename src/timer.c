@@ -30,7 +30,7 @@
 
 #include "timer.h"
 
-#if PROFILING > 0
+#if PROFILE_ECOS > 0
 
 #if (defined WIN32 || _WIN64)
 

@@ -25,9 +25,9 @@
 
 /* SET PRINT LEVEL ----------------------------------------------------- */
 #define PRINTLEVEL (2)     /* 0: no prints					             */
-						   /* 1: only final info				         */
+						               /* 1: only final info				         */
                            /* 2: progress print per iteration            */
-						   /* 3: debug level, enables print & dump fcns. */
+						               /* 3: debug level, enables print & dump fcns. */
 
 #define MATLAB_FLUSH_PRINTS
                             /* print each iteration directly to Matlab.  */
@@ -36,9 +36,9 @@
                             /* problems.                                 */
 
 /* SET PROFILING LEVEL ------------------------------------------------- */
-#define PROFILING (1)      /* 0: no timing information				     */
-                           /* 1: runtime (divided in setup and solve)    */
-                           /* 2: detailed profiling                      */
+#define PROFILE_ECOS (1)      /* 0: no timing information				     */
+                              /* 1: runtime (divided in setup and solve)    */
+                              /* 2: detailed profiling                      */
 
 /* SET DEBUG LEVEL ----------------------------------------------------- */
 #define DEBUG (0)          /* 0: no debugging information                */
@@ -81,14 +81,14 @@ typedef double pfloat;              /* for numerical values  */
 
 /* USE SAME NUMBER REPRESENTATION FOR INDEXING AS AMD AND LDL ---------- */
 #if defined(DLONG) && !defined(LDL_LONG) || defined(LDL_LONG) && !defined(DLONG)
-#error "Inconsistent definition of DLONG and LDL_LONG"
+// #error "Inconsistent definition of DLONG and LDL_LONG"
 #endif
 
-#ifdef DLONG
+// #ifdef DLONG
 typedef SuiteSparse_long idxint;
-#else
-typedef int idxint;
-#endif
+// #else
+// typedef int idxint;
+// #endif
 
 /* SYSTEM INCLUDE IF COMPILING FOR MATLAB ------------------------------ */
 #ifdef MATLAB_MEX_FILE

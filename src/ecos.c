@@ -263,7 +263,7 @@ idxint init(pwork* w)
 	idxint* Pinv = w->KKT->Pinv;
     pfloat rx, ry, rz;
 
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 	timer tfactor, tkktsolve;
 #endif
 
@@ -318,7 +318,7 @@ idxint init(pwork* w)
 #endif
 
 	/* Factor KKT matrix - this is needed in all 3 linear system solves */
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 	tic(&tfactor);
     KKT_FACTOR_RETURN_CODE = kkt_factor(w->KKT, w->stgs->eps, w->stgs->delta, &w->info->tfactor_t1, &w->info->tfactor_t2);
 	w->info->tfactor += toc(&tfactor);
@@ -350,11 +350,11 @@ idxint init(pwork* w)
 	 */
 
 	/* Solve for RHS [0; b; h] */
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 	tic(&tkktsolve);
 #endif
 	w->info->nitref1 = kkt_solve(w->KKT, w->A, w->G, w->KKT->RHS1, w->KKT->dx1, w->KKT->dy1, w->KKT->dz1, w->n, w->p, w->m, w->C, 1, w->stgs->nitref);
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 	w->info->tkktsolve += toc(&tkktsolve);
 #endif
 
@@ -390,11 +390,11 @@ idxint init(pwork* w)
 	 */
 
 	/* Solve for RHS [-c; 0; 0] */
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 	tic(&tkktsolve);
 #endif
 	w->info->nitref2 = kkt_solve(w->KKT, w->A, w->G, w->KKT->RHS2, w->KKT->dx2, w->KKT->dy2, w->KKT->dz2, w->n, w->p, w->m, w->C, 1, w->stgs->nitref);
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 	w->info->tkktsolve += toc(&tkktsolve);
 #endif
 
@@ -1088,10 +1088,10 @@ idxint ECOS_solve(pwork* w)
     char fn[20];
 #endif
 
-#if PROFILING > 0
+#if PROFILE_ECOS > 0
 	timer tsolve;
 #endif
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
     timer tfactor, tkktsolve;
 #endif
 
@@ -1099,7 +1099,7 @@ idxint ECOS_solve(pwork* w)
     for(i = 0; i <w->n; i++) { w->c[i] /= w->xequil[i]; }
 #endif
 
-#if PROFILING > 0
+#if PROFILE_ECOS > 0
     /* start timer */
     tic(&tsolve);
 #endif
@@ -1289,7 +1289,7 @@ idxint ECOS_solve(pwork* w)
         dumpSparseMatrix(w->KKT->PKPt, fn);
 #endif
         /* factor KKT matrix */
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 		tic(&tfactor);
         KKT_FACTOR_RETURN_CODE = kkt_factor(w->KKT, w->stgs->eps, w->stgs->delta, &w->info->tfactor_t1, &w->info->tfactor_t2);
         w->info->tfactor += toc(&tfactor);
@@ -1312,11 +1312,11 @@ idxint ECOS_solve(pwork* w)
 	    }
 
 		/* Solve for RHS1, which is used later also in combined direction */
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 		tic(&tkktsolve);
 #endif
 		w->info->nitref1 = kkt_solve(w->KKT, w->A, w->G, w->KKT->RHS1, w->KKT->dx1, w->KKT->dy1, w->KKT->dz1, w->n, w->p, w->m, w->C, 0, w->stgs->nitref);
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 		w->info->tkktsolve += toc(&tkktsolve);
 #endif
 
@@ -1329,11 +1329,11 @@ idxint ECOS_solve(pwork* w)
 
 		/* AFFINE SEARCH DIRECTION (predictor, need dsaff and dzaff only) */
 		RHS_affine(w);
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 		tic(&tkktsolve);
 #endif
 		w->info->nitref2 = kkt_solve(w->KKT, w->A, w->G, w->KKT->RHS2, w->KKT->dx2, w->KKT->dy2, w->KKT->dz2, w->n, w->p, w->m, w->C, 0, w->stgs->nitref);
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 		w->info->tkktsolve += toc(&tkktsolve);
 #endif
 
@@ -1440,11 +1440,11 @@ idxint ECOS_solve(pwork* w)
 
 		/* COMBINED SEARCH DIRECTION */
 		RHS_combined(w);
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 		tic(&tkktsolve);
 #endif
 		w->info->nitref3 = kkt_solve(w->KKT, w->A, w->G, w->KKT->RHS2, w->KKT->dx2, w->KKT->dy2, w->KKT->dz2, w->n, w->p, w->m, w->C, 0, w->stgs->nitref);
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 		w->info->tkktsolve += toc(&tkktsolve);
 #endif
 
@@ -1567,12 +1567,12 @@ idxint ECOS_solve(pwork* w)
 	backscale(w);
 
 	/* stop timer */
-#if PROFILING > 0
+#if PROFILE_ECOS > 0
 	w->info->tsolve = toc(&tsolve);
 #endif
 
 #if PRINTLEVEL > 0
-#if PROFILING > 0
+#if PROFILE_ECOS > 0
 	if( w->stgs->verbose ) PRINTTEXT("\nRuntime: %f seconds.", w->info->tsetup + w->info->tsolve);
 #endif
 	if( w->stgs->verbose ) PRINTTEXT("\n\n");

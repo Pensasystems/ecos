@@ -281,7 +281,7 @@ LDL_int LDL_numeric2	/* returns n if successful, k if D (k,k) is zero */
     double Y [ ],	     /* workspace of size n, not defn. on input or output */
     LDL_int Pattern [ ], /* workspace of size n, not defn. on input or output */
     LDL_int Flag [ ]	 /* workspace of size n, not defn. on input or output */
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
     ,double *t1,           /* time for non-zero pattern computation */
     double *t2           /* time for back-solves */
 #endif
@@ -290,14 +290,14 @@ LDL_int LDL_numeric2	/* returns n if successful, k if D (k,k) is zero */
     double yi, l_ki;
     LDL_int i, k, p, p2, len, top;
         
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
     timer clock;
 #endif
     
     /* go row-wise about this */
     for (k = 0 ; k < n ; k++){
         
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
         tic(&clock);
 #endif
 		/* compute nonzero Pattern of kth row of L, in topological order */
@@ -315,7 +315,7 @@ LDL_int LDL_numeric2	/* returns n if successful, k if D (k,k) is zero */
 			}
 			while (len > 0) Pattern [--top] = Pattern [--len] ;	    
 		}
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
         *t1 += toc(&clock);        
         tic(&clock);
 #endif
@@ -340,7 +340,7 @@ LDL_int LDL_numeric2	/* returns n if successful, k if D (k,k) is zero */
         /* Dynamic regularization */
         D[k] = Sign[k]*D[k] <= eps ? Sign[k]*delta : D[k];
         
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
         *t2 += toc(&clock);
 #endif
         /* FOR DEBUG

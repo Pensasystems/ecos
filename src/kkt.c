@@ -34,7 +34,7 @@
 #include <math.h>
 
 /* Factorization of KKT matrix. Just a wrapper for some LDL code */
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
 idxint kkt_factor(kkt* KKT, pfloat eps, pfloat delta, pfloat *t1, pfloat* t2)
 #else
 idxint kkt_factor(kkt* KKT, pfloat eps, pfloat delta)
@@ -60,7 +60,7 @@ idxint kkt_factor(kkt* KKT, pfloat eps, pfloat delta)
 				KKT->work1,		/* workspace of size n, not defn. on input or output */
 				KKT->Pattern,   /* workspace of size n, not defn. on input or output */
 				KKT->Flag	    /* workspace of size n, not defn. on input or output */
-#if PROFILING > 1
+#if PROFILE_ECOS > 1
                       , t1, t2
 #endif
     );

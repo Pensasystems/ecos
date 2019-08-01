@@ -30,7 +30,7 @@ int main(void)
 	/*char ver[7];*/
     idxint exitflag = ECOS_FATAL;
 	pwork* mywork;
-#if PROFILING > 1 && PRINTLEVEL > 2
+#if PROFILE_ECOS > 1 && PRINTLEVEL > 2
     double torder, tkktcreate, ttranspose, tfactor, tkktsolve, ttotal, tsetup, tsolve;
 #endif
 	
@@ -45,7 +45,7 @@ int main(void)
     	/* test second solve
     	exitflag = ECOS_solve(mywork); */
 
-#if PROFILING > 1 && PRINTLEVEL > 2
+#if PROFILE_ECOS > 1 && PRINTLEVEL > 2
 		
 		/* some statistics in milliseconds */
 		tsolve = mywork->info->tsolve         * 1000;
